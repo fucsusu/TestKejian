@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="tools_timer_line">#FFE3E1EB</color>
+    <color name="tools_timer_select">#FFA291D3</color>
+    <color name="tools_timer_unselect">#53a291d3</color>
+
+    <color name="popup_courseware_title">#B46CDB</color>
+    <color name="popup_courseware_title2">#A3B46CDB</color>
+</resources>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/class_root"
+    tools:context=".webactivity.TestActivity">
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/class_control"
+        tools:ignore="MissingConstraints" />
+
+
+    <LinearLayout
+        android:id="@+id/class_control"
+        android:layout_width="163dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:id="@+id/class_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="切换课件" />
+
+        <Button
+            android:id="@+id/class_before"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="上一页" />
+
+        <Button
+            android:id="@+id/class_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="下一页" />
+
+        <Button
+            android:id="@+id/class_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="答题" />
+
+        <Button
+            android:id="@+id/class_loacal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="本地下载" />
+
+        <Button
+            android:id="@+id/class_clean"
+            android:onClick="btnClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清除缓存" />
+
+        <EditText
+            android:id="@+id/class_pptid"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="#F32121" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/kejian_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="课件信息:"
+        android:textColor="#FF1300" />
+
+    <TextView
+        android:id="@+id/load_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#3E12181D"
+        android:gravity="center"
+        android:onClick="btnClick"
+        android:text="加载中。。。。" />
+</RelativeLayout>

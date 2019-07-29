@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ProgressActivity">
+
+
+    <View
+        android:id="@+id/progress_bg"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        android:background="#41A2FF" />
+
+    <com.example.fucc.myapplication.view.MyProgressView
+        android:id="@+id/progress_tiaowen"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@id/progress_bg"
+        android:layout_alignTop="@id/progress_bg"
+        android:scaleType="fitXY"
+        android:src="@mipmap/load_progress"
+        tools:ignore="MissingConstraints" />
+
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:src="@drawable/maikefeng_1" />
+
+    <com.example.fucc.myapplication.view.MikeRateView
+        android:id="@+id/mike_progress"
+        android:layout_width="62dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="29dp"
+        android:background="#00FFFFFF"
+        android:onClick="btnClick" />
+
+    <com.example.fucc.myapplication.view.AnswerCountDown
+        android:id="@+id/countdown_timer"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_alignParentBottom="true"
+        android:onClick="btnClick" />
+
+</RelativeLayout>

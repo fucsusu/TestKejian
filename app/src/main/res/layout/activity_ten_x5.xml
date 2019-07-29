@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".webactivity.TenX5Activity">
+
+    <com.tencent.smtt.sdk.WebView
+        android:id="@+id/tenx5_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/class_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="切换课件" />
+
+        <Button
+            android:id="@+id/class_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="下一页" />
+
+        <Button
+            android:id="@+id/class_before"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="上一页" />
+
+        <Button
+            android:id="@+id/class_rest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="重置" />
+
+        <TextView
+            android:id="@+id/kejian_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="课件信息:"
+            android:textColor="#FF1300" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/load_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="#3E12181D"
+        android:onClick="btnClick"
+        android:text="加载中。。。。" />
+
+</RelativeLayout>

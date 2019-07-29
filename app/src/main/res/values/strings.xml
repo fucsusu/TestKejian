@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">课件测试</string>
+    <string name="courseware_load_txt1">课件加载中......  请耐心等待！</string>
+    <string name="courseware_load_txt2">为保证正常加载，请您不要退出或处于后台运行。</string>
+    <string name="courseware_load_txt">已加载:</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

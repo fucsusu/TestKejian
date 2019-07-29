@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item
+        android:drawable="@drawable/send_trophy_00000"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00001"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00002"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00003"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00004"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00005"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00006"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00007"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00008"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00009"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00010"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00011"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00012"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00013"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00014"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00015"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00016"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00017"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00018"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00019"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00020"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00021"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00022"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00023"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00024"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00025"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00026"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00027"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00028"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00029"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00030"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00031"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00032"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00033"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00034"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00035"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00036"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00037"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00038"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00039"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00040"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00041"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00042"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00043"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00044"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00045"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00046"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00047"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00048"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00049"
+        android:duration="60" />
+    <item
+        android:drawable="@drawable/send_trophy_00049"
+        android:duration="3000" />
+</animation-list>

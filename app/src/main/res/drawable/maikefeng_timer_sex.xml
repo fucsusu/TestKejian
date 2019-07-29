@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item
+        android:drawable="@drawable/maikefeng_a"
+        android:duration="1000" />
+    <item
+        android:drawable="@drawable/maikefeng_b"
+        android:duration="1000" />
+    <item
+        android:drawable="@drawable/maikefeng_c"
+        android:duration="1000" />
+    <item
+        android:drawable="@drawable/maikefeng_d"
+        android:duration="1000" />
+    <item
+        android:drawable="@drawable/maikefeng_e"
+        android:duration="1000" />
+    <item
+        android:drawable="@drawable/maikefeng_f"
+        android:duration="1000" />
+    <item
+        android:drawable="@drawable/maikefeng_g"
+        android:duration="1000" />
+</animation-list>
