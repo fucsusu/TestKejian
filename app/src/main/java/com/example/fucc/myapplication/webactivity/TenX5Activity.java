@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.fucc.myapplication.R;
 import com.tencent.smtt.sdk.ValueCallback;
 import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 
 public class TenX5Activity extends AppCompatActivity {
@@ -34,7 +35,9 @@ public class TenX5Activity extends AppCompatActivity {
         load = findViewById(R.id.load_btn);
 
         initWebView();
-        tenX5.loadUrl("file:///android_asset/Lesson1/preview.html");
+       // tenX5.loadUrl("file:///android_asset/Lesson1/preview.html");
+        tenX5.loadUrl("file:///android_asset/LessonTest/index.html");
+
         // tenX5.loadUrl("file://mnt/sdcard/Android/data/com.example.fucc.myapplication/files/2/2.html");
 
         //tenX5.loadUrl(getFileUrl());
@@ -93,17 +96,27 @@ public class TenX5Activity extends AppCompatActivity {
 
 
     private void initWebView() {
-        tenX5.getSettings().setSupportZoom(true); //支持缩放，默认为true。是下面那个的前提。
-        tenX5.getSettings().setBuiltInZoomControls(true); //设置内置的缩放控件。若为false，则该WebView不可缩放
-        tenX5.getSettings().setDisplayZoomControls(true); //隐藏原生的缩放控件
-        tenX5.getSettings().setBlockNetworkImage(false);//解决图片不显示
-        tenX5.getSettings().setLoadsImagesAutomatically(true); //支持自动加载图片
-        tenX5.getSettings().setDefaultTextEncodingName("utf-8");//设置编码格式
+        WebSettings settings = tenX5.getSettings();
+        settings.setSupportZoom(false); //支持缩放，默认为true。是下面那个的前提。
+        settings.setBuiltInZoomControls(false); //设置内置的缩放控件。若为false，则该WebView不可缩放
+        settings.setDisplayZoomControls(false); //隐藏原生的缩放控件
+        settings.setBlockNetworkImage(false);//解决图片不显示
+        settings.setLoadsImagesAutomatically(true); //支持自动加载图片
+        settings.setDefaultTextEncodingName("utf-8");//设置编码格式
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
+        settings.setAllowFileAccess(true);
+        settings.setSupportZoom(true);
+        settings.setMediaPlaybackRequiresUserGesture(false);
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+
+        settings.setDomStorageEnabled(true);// 必须保留，否则无法播放优酷视频，其他的OK
         //监听网页的加载进度
         tenX5.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                Log.e("aaaaaaa", "onProgressChanged: " + newProgress);
                 if (newProgress == 100) {
                     load.setVisibility(View.GONE);
                 }

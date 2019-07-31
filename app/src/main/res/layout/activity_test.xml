@@ -2,25 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/class_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/class_root"
     tools:context=".webactivity.TestActivity">
 
-    <WebView
+    <com.example.fucc.myapplication.view.MyWebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toLeftOf="@id/class_control"
         tools:ignore="MissingConstraints" />
 
+    <com.example.fucc.myapplication.whiteboard.PaintPad
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/class_control" />
+
 
     <LinearLayout
         android:id="@+id/class_control"
         android:layout_width="163dp"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_alignParentRight="true"
+        android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
         <Button
@@ -60,9 +65,9 @@
 
         <Button
             android:id="@+id/class_clean"
-            android:onClick="btnClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="btnClick"
             android:text="清除缓存" />
 
         <EditText

@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 
 import com.example.fucc.myapplication.R;
 import com.example.fucc.myapplication.view.AnswerCountDown;
+import com.example.fucc.myapplication.view.EllipseView;
 import com.example.fucc.myapplication.view.MikeRateView;
 import com.example.fucc.myapplication.view.MyProgressView;
 
@@ -18,6 +19,7 @@ public class ProgressActivity extends AppCompatActivity {
     public MyProgressView myProgressView;
     private double progress = 1;
     public View bg;
+    public EllipseView mike2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +30,15 @@ public class ProgressActivity extends AppCompatActivity {
         bg = findViewById(R.id.progress_bg);
         mikeRateView = findViewById(R.id.mike_progress);
         answerCountDown = findViewById(R.id.countdown_timer);
+        mike2 = findViewById(R.id.mike_progress_new);
     }
 
     public void btnClick(View view) {
         switch (view.getId()) {
             case R.id.mike_progress:
-                mikeRateView.start(6);
-                updatePercent(++progress / 10d);
+//                mikeRateView.start(6);
+//                updatePercent(++progress / 10d);
+                mike2.startCountDown(6);
                 break;
             case R.id.countdown_timer:
                 answerCountDown.startCountDown();

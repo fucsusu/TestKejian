@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>HTML5 Canvas Demo</title>
+		<script>
+		//模板预览页面，depends里面的内容填写模板名称，所有的模板名称一定不能相同
+			depends = ["cablecar"]
+			if("wView" in window) {
+				window.wView.allowsInlineMediaPlayback = "YES";
+				window.wView.mediaPlaybackRequiresUserAction = "NO";
+			}
+		</script>
+		<SCRIPT language=javascript src="board.js"></script>
+		<SCRIPT language=javascript src="config.js"></script>
+	</head>
+
+	<body style="height: 100%;width: 100%;margin: 0;padding: 0;">
+
+		<div id="my_painter">
+			<canvas id="event_canvas" style=" height: 100%;width: 100%;margin: 0;padding: 0;display: block;"></canvas>
+		</div>
+
+		<SCRIPT language=javascript>
+			function stop() {
+				return false;
+			}
+		</script>
+		<SCRIPT language=javascript src="../../static/preview.main.js"></script>
+	</body>
+
+</html>

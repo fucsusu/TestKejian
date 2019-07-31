@@ -1,39 +1,36 @@
 package com.example.fucc.myapplication.webactivity;
 
 import android.annotation.SuppressLint;
-import android.net.http.SslError;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.SslErrorHandler;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebStorage;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.fucc.myapplication.utils.CoursewareDownLoadUtil;
 import com.example.fucc.myapplication.R;
+import com.example.fucc.myapplication.utils.CoursewareDownLoadUtil;
 import com.example.fucc.myapplication.utils.DelectFileUtil;
+import com.example.fucc.myapplication.view.MyWebView;
+import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 import java.io.File;
-import java.lang.reflect.Method;
 
 public class TestActivity extends AppCompatActivity {
 
-    public WebView webView;
+    public MyWebView webView;
     private int kejianID = 1;
     private int pagenum = 0;
     public TextView kejianmsg;
@@ -49,16 +46,16 @@ public class TestActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_test);
 
-        webView = (WebView) findViewById(R.id.webview);
+        webView = findViewById(R.id.webview);
         kejianmsg = findViewById(R.id.kejian_message);
         editText = findViewById(R.id.class_pptid);
         load = findViewById(R.id.load_btn);
         rootview = findViewById(R.id.class_root);
         initWebView();
-        //webView.loadUrl("file:///android_asset/Lesson11/preview.html");
+        webView.loadUrl("file:///android_asset/LessonTest/index.html");
 
         //webView.loadUrl("file:///mnt/sdcard/Android/data/com.example.fucc.myapplication/files/Lesson1/preview.html");
-        webView.loadUrl(getFileUrl());
+        //webView.loadUrl(getFileUrl());
 
         //webView.loadUrl("http://h.gogo-talk.com/2.html");
         showPage();
@@ -134,7 +131,6 @@ public class TestActivity extends AppCompatActivity {
                         });
                 break;
             case R.id.class_clean:
-                WebStorage.getInstance().deleteAllData();
                 File[] files = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()).listFiles();
                 for (int j = 0; j < files.length; j++) {
                     DelectFileUtil.DeleteFolder(files[j]);
@@ -175,28 +171,6 @@ public class TestActivity extends AppCompatActivity {
         webSettings.setPluginState(WebSettings.PluginState.ON);
         webSettings.setDomStorageEnabled(true);// 必须保留，否则无法播放优酷视频，其他的OK
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webSettings.setMixedContentMode(webSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
-
-        if (Build.VERSION.SDK_INT >= 19) {//设置是否自动加载图片
-            webSettings.setLoadsImagesAutomatically(true);
-        } else {
-            webSettings.setLoadsImagesAutomatically(false);
-        }
-
-        try {
-            if (Build.VERSION.SDK_INT >= 16) {
-                Class<?> clazz = webSettings.getClass();
-                Method method = clazz.getMethod("setAllowUniversalAccessFromFileURLs", boolean.class);
-                if (method != null) {
-                    method.invoke(webSettings, true);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         webView.setWebViewClient(new WebViewClient() {
             /**
              * 当前网页的链接仍在webView中跳转
@@ -207,13 +181,6 @@ public class TestActivity extends AppCompatActivity {
                 return true;
             }
 
-            /**
-             * 处理ssl请求
-             */
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed();
-            }
 
             /**
              * 页面载入完成回调
@@ -233,7 +200,7 @@ public class TestActivity extends AppCompatActivity {
              * 显示自定义视图，无此方法视频不能播放
              */
             @Override
-            public void onShowCustomView(View view, CustomViewCallback callback) {
+            public void onShowCustomView(View view, IX5WebChromeClient.CustomViewCallback callback) {
                 super.onShowCustomView(view, callback);
             }
         });
