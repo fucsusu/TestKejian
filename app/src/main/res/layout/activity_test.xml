@@ -7,17 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".webactivity.TestActivity">
 
-    <com.example.fucc.myapplication.view.MyWebView
+    <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toLeftOf="@id/class_control"
         tools:ignore="MissingConstraints" />
 
-    <com.example.fucc.myapplication.whiteboard.PaintPad
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toLeftOf="@id/class_control" />
+    <!--<com.example.fucc.myapplication.whiteboard.PaintPad-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_toLeftOf="@id/class_control" />-->
 
 
     <LinearLayout
@@ -33,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="btnClick"
+            android:visibility="gone"
             android:text="切换课件" />
 
         <Button

@@ -10,32 +10,33 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fucc.myapplication.R;
+import com.example.fucc.myapplication.utils.AppUtils;
 import com.example.fucc.myapplication.utils.CoursewareDownLoadUtil;
 import com.example.fucc.myapplication.utils.DelectFileUtil;
-import com.example.fucc.myapplication.view.MyWebView;
-import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
-import com.tencent.smtt.sdk.ValueCallback;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
+
 
 import java.io.File;
 
 public class TestActivity extends AppCompatActivity {
 
-    public MyWebView webView;
+    public WebView webView;
     private int kejianID = 1;
     private int pagenum = 0;
     public TextView kejianmsg;
     public View load;
     public EditText editText;
+    public WebSettings webSettings;
     private RelativeLayout rootview;
 
     @SuppressLint("NewApi")
@@ -44,6 +45,7 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN |
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        AppUtils.hideVirtualKeyView(this);
         setContentView(R.layout.activity_test);
 
         webView = findViewById(R.id.webview);
@@ -52,10 +54,10 @@ public class TestActivity extends AppCompatActivity {
         load = findViewById(R.id.load_btn);
         rootview = findViewById(R.id.class_root);
         initWebView();
-        webView.loadUrl("file:///android_asset/LessonTest/index.html");
+        // webView.loadUrl("file:///android_asset/LessonTest/index.html");
 
         //webView.loadUrl("file:///mnt/sdcard/Android/data/com.example.fucc.myapplication/files/Lesson1/preview.html");
-        //webView.loadUrl(getFileUrl());
+        webView.loadUrl(getFileUrl());
 
         //webView.loadUrl("http://h.gogo-talk.com/2.html");
         showPage();
@@ -149,49 +151,58 @@ public class TestActivity extends AppCompatActivity {
     /**
      * 加载webview
      */
-    @SuppressLint("NewApi")
+    @SuppressLint({"NewApi", "JavascriptInterface"})
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void initWebView() {
-        //加载assets目录下的html
         //加上下面这段代码可以使网页中的链接不以浏览器的方式打开
         webView.setWebViewClient(new WebViewClient());
+
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);//滚动条风格，为0指滚动条不占用空间，直接覆盖在网页上
         //得到webview设置
-        WebSettings webSettings = webView.getSettings();
+        webSettings = webView.getSettings();
         //允许使用javascript
         webSettings.setJavaScriptEnabled(true);
+        //设置加载网页时暂不加载图片
+        webSettings.setBlockNetworkImage(false);
+        //设置webview推荐使用的窗口，使html界面自适应屏幕
         webSettings.setUseWideViewPort(true);
+        //缩放至屏幕的大小
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setAllowFileAccessFromFileURLs(true);
         webSettings.setAllowUniversalAccessFromFileURLs(true);
+        //设置可以访问文件加载本地html
         webSettings.setAllowFileAccess(true);
+        //设置支持缩放
         webSettings.setSupportZoom(true);
-        webSettings.setMediaPlaybackRequiresUserGesture(false);
+        //设置图片加载
+        webSettings.setLoadsImagesAutomatically(true);
+        //设置是否需要手势去播放视频
+        webSettings.setMediaPlaybackRequiresUserGesture(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setPluginState(WebSettings.PluginState.ON);
         webSettings.setDomStorageEnabled(true);// 必须保留，否则无法播放优酷视频，其他的OK
+        //设置不缓存
+        webSettings.setAppCacheEnabled(false);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        //设置渲染优先级
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+
+        webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
+
+        webView.addJavascriptInterface(this, "androidApi");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else {
+            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
 
         webView.setWebViewClient(new WebViewClient() {
-            /**
-             * 当前网页的链接仍在webView中跳转
-             */
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-
-
-            /**
-             * 页面载入完成回调
-             */
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                view.loadUrl("javascript:try{autoplay();}catch(e){}");
-                load.setVisibility(View.INVISIBLE);
+                load.setVisibility(View.GONE);
             }
-
         });
 
 
@@ -200,9 +211,17 @@ public class TestActivity extends AppCompatActivity {
              * 显示自定义视图，无此方法视频不能播放
              */
             @Override
-            public void onShowCustomView(View view, IX5WebChromeClient.CustomViewCallback callback) {
+            public void onShowCustomView(View view, CustomViewCallback callback) {
                 super.onShowCustomView(view, callback);
             }
         });
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            AppUtils.fullScreenImmersive(getWindow());
+        }
     }
 }

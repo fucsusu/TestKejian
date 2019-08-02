@@ -12,15 +12,12 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Region.Op;
-import android.os.Build;
 import android.text.Layout.Alignment;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.fucc.myapplication.utils.ColorUtils;
 
@@ -52,16 +49,6 @@ public class PaintPad extends View {
     private RectF m_orgRcBK = null;
 
     private static final int ActionBorder = 15;
-    //放大系数
-    private float dbZoomScale = (float) 1.000000;
-
-    //是否可移动放大白板
-    private boolean isMove = false;
-    //移动白板坐标
-    private PointF mfMovePoint = new PointF();
-
-    //移动白板时回调
-    private PaintPadMoveInterface mPaintPadMoveInterface;
 
     //工具类型
     private ToolsType mToolsType = ToolsType.pen;
@@ -86,20 +73,13 @@ public class PaintPad extends View {
     private int mToolsFormWidth = 10;
     //橡皮宽高
     private int mToolsEraserWidth = 10;
-    //turn是顶层画笔  false是底部接受信令绘制类
-    private boolean isDisplayDraw = false;
+
     //存放画笔数据
     public List<TL_PadAction> padActions = new ArrayList<>();
 
     public PaintPad(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
-    private String[] whiteBoardbackground = {"#ffffff", "#000000", "#415646",
-            "#ffc973", "#5d4245", "#9ad0ea", "#756691", "#558289"};
-
-    //自定义白板底色的色值索引
-    private int colorIndex = 0;
 
     {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -118,26 +98,8 @@ public class PaintPad extends View {
     //画板创建
     boolean PaintBk(Canvas cvs) {
         //是顶层绘制 只需要透明绘制层
-        if (isDisplayDraw) {
-            Paint linePaint = new Paint();
-            linePaint.setColor(Color.TRANSPARENT);
-            cvs.drawRect(m_rcBK, linePaint);
-        } else {
-            if (linePaint == null) {
-                linePaint = new Paint();
-            }
-            linePaint.setColor(Color.parseColor(whiteBoardbackground[colorIndex]));
-
-            cvs.drawRect(m_rcBK, linePaint);
-
-            RectF rectF = new RectF(m_rcBK.left, m_rcBK.top, m_rcBK.right, m_rcBK.bottom);
-            Paint paint = new Paint();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                cvs.saveLayer(rectF, paint);
-            } else {
-                cvs.saveLayer(m_rcBK.left, m_rcBK.top, m_rcBK.right, m_rcBK.bottom, paint, Canvas.ALL_SAVE_FLAG);
-            }
-        }
+        linePaint.setColor(Color.TRANSPARENT);
+        cvs.drawRect(m_rcBK, linePaint);
         return true;
     }
 
@@ -148,7 +110,6 @@ public class PaintPad extends View {
      */
     void PaintActions(Canvas cvs) {
         //是底层数据只在收到数据重绘
-        Log.e("aaaaaa", "PaintActions: " + padActions.size());
         for (int i = 0; i < padActions.size(); i++) {
             PaintPadAction(padActions.get(i), cvs);
         }
@@ -156,7 +117,6 @@ public class PaintPad extends View {
         if (m_tl_CurrentPadAction != null) {
             PaintPadAction(m_tl_CurrentPadAction, cvs);
         }
-
     }
 
     /***
@@ -200,21 +160,16 @@ public class PaintPad extends View {
                 linePaint.setStrokeWidth(tl_pa.nPenWidth / penWidthRatio());
 
                 //转化成统一高度下的百分比
-                if (!isDisplayDraw) {
-                    tl_pa.alActionPoint.clear();
-                    for (int i = 0; i < tl_pa.points.size(); i++) {
-                        tl_pa.alActionPoint.add(UnWhithXYLinePath(tl_pa.points.get(i)));
-                    }
+                tl_pa.alActionPoint.clear();
+                for (int i = 0; i < tl_pa.points.size(); i++) {
+                    tl_pa.alActionPoint.add(UnWhithXYLinePath(tl_pa.points.get(i)));
                 }
-
-
                 int nSize = tl_pa.alActionPoint.size();
                 if (nSize <= 2) {
                     PointF pointF = unRelativePoint(tl_pa.alActionPoint.get(0));
                     cvs.drawPoint(pointF.x, pointF.y, linePaint);
                     break;
                 }
-
                 cvs.drawPath(getMarkPenPath(tl_pa), linePaint);
             }
             break;
@@ -495,12 +450,6 @@ public class PaintPad extends View {
 
 
     public boolean OnTouchDown(MotionEvent event) {
-        //是否是放大 并且 无画笔类型
-        if (isMove && mToolsType == ToolsType.defaule) {
-            mfMovePoint.x = event.getX();
-            mfMovePoint.y = event.getY();
-            return true;
-        }
 
         //无画笔类型
         if (mToolsType == ToolsType.defaule) {
@@ -573,7 +522,7 @@ public class PaintPad extends View {
                     //0: default  1: 小白板  2 ： 视频标注
                     m_tl_CurrentPadAction.boardType = 0;
                     //注：现在放大为当前控件放大，而不是画布放大（放大镜模式）所以不需要放大后去乘画笔的放大系数
-                    double penwidth = m_nPenWidth * 1.0 * 60 / 100 * penWidthRatio() * dbZoomScale;
+                    double penwidth = m_nPenWidth * 1.0 * 60 / 100 * penWidthRatio();
                     m_tl_CurrentPadAction.nPenWidth = (int) penwidth;
                     if (m_nActionMode == TL_PadAction.factoryType.ft_markerPen && !m_bActionfill) {
                         Integer[] rgb = ColorUtils.RGB(m_nPenColor);
@@ -607,11 +556,6 @@ public class PaintPad extends View {
     }
 
     public boolean OnTouchMove(MotionEvent event) {
-
-        if (isMove) {
-            return toMove(event);
-        }
-
         if (m_nActionMode == null) return true;
 
         if (mToolsType != ToolsType.defaule) {
@@ -642,50 +586,6 @@ public class PaintPad extends View {
                     break;
 
             }
-        }
-        return true;
-    }
-
-    /**
-     * 执行移动
-     *
-     * @param event
-     * @return
-     */
-    private boolean toMove(MotionEvent event) {
-        RectF rcOld = new RectF(m_rcBK);
-        PointF currentMovePoint = new PointF(event.getX(), event.getY());
-
-        if (mPaintPadMoveInterface != null) {
-            mPaintPadMoveInterface.onTouchMove(currentMovePoint.x - mfMovePoint.x, currentMovePoint.y - mfMovePoint.y);
-        }
-
-        m_rcBK.offset(currentMovePoint.x - mfMovePoint.x, currentMovePoint.y - mfMovePoint.y);
-
-        mfMovePoint = currentMovePoint;
-
-
-        if (m_rcBK.width() < this.getWidth()) {
-            m_rcBK.offsetTo((this.getWidth() - m_rcBK.width()) / 2, m_rcBK.top);
-        } else if (m_rcBK.left > 0) {
-            m_rcBK.offsetTo(0, m_rcBK.top);
-        } else if (m_rcBK.right < this.getWidth()) {
-            m_rcBK.offset(this.getWidth() - m_rcBK.right, 0);
-        }
-
-        if (m_rcBK.height() < this.getHeight()) {
-            m_rcBK.offsetTo(m_rcBK.left, (this.getHeight() - m_rcBK.height()) / 2);
-        } else if (m_rcBK.top > 0) {
-            m_rcBK.offsetTo(m_rcBK.left, 0);
-        } else if (m_rcBK.bottom < this.getHeight()) {
-            m_rcBK.offset(0, this.getHeight() - m_rcBK.bottom);
-        }
-
-        // mfZoomCheckPoint = currentZoomCheckPoint;
-        this.invalidate();
-
-        if (equalRect(rcOld, m_rcBK)) {
-            return false;
         }
         return true;
     }
@@ -727,15 +627,16 @@ public class PaintPad extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        m_nOldWidth = MeasureSpec.getSize(widthMeasureSpec);
-        m_nOldHeight = MeasureSpec.getSize(heightMeasureSpec);
-        m_rcBK.left = m_nOldWidth;
-        m_rcBK.bottom = m_nOldHeight;
+
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        m_nOldWidth = w;
+        m_nOldHeight = h;
+        m_rcBK.left = m_nOldWidth;
+        m_rcBK.bottom = m_nOldHeight;
     }
 
     /**
@@ -1022,7 +923,7 @@ public class PaintPad extends View {
         m_tl_CurrentPadAction.sID = m_tl_CurrentPadAction.hashCode() + "";
         m_tl_CurrentPadAction.boardType = 0;
         m_tl_CurrentPadAction.nActionMode = TL_PadAction.factoryType.ft_Text;
-        double penwidth = m_nPenWidth * 1.0 * 60 / 100 * penWidthRatio() * dbZoomScale;
+        double penwidth = m_nPenWidth * 1.0 * 60 / 100 * penWidthRatio();
         m_tl_CurrentPadAction.nPenWidth = (int) penwidth;
         m_tl_CurrentPadAction.nPenColor = m_nPenColor;
         m_tl_CurrentPadAction.bIsFill = m_bActionfill;
@@ -1334,122 +1235,6 @@ public class PaintPad extends View {
         return null;
     }
 
-
-    /**
-     * 设置是顶层还是底层
-     *
-     * @param isdraw
-     */
-    public void setDrawShow(boolean isdraw) {
-        this.isDisplayDraw = isdraw;
-    }
-
-
-    /**
-     * 放大 or 缩小
-     */
-
-    public float LargeOrSmallView(boolean largeOrSmall) {
-        float scale = (float) 0.500000;
-        if (largeOrSmall) {
-            dbZoomScale += scale;
-        } else {
-            dbZoomScale -= scale;
-        }
-
-        if (dbZoomScale < 1.0) {
-            dbZoomScale = (float) 1.0;
-            return dbZoomScale;
-        }
-        if (dbZoomScale >= 3.0) {
-            dbZoomScale = (float) 3.0;
-        }
-
-        if (dbZoomScale == 1.0) {
-            isMove = false;
-        } else {
-            isMove = true;
-        }
-
-        //执行缩放
-        executeZoom();
-
-        return dbZoomScale;
-    }
-
-    /**
-     * 放大 or 缩小 到指定比值
-     */
-
-    public float LargeOrSmallView(float scale) {
-        dbZoomScale = scale;
-        //执行缩放
-        executeZoom();
-
-        return dbZoomScale;
-    }
-
-    /**
-     * 当前比值下 去 放大 or 缩小
-     */
-    public float LargeOrSmallView() {
-
-        //执行缩放
-        executeZoom();
-
-        return dbZoomScale;
-    }
-
-    /**
-     * 执行缩放
-     */
-    private void executeZoom() {
-        m_rcBK.right = m_rcOriginBK.right * dbZoomScale;
-        m_rcBK.top = m_rcOriginBK.top * dbZoomScale;
-        m_rcBK.left = m_rcOriginBK.left * dbZoomScale;
-        m_rcBK.bottom = m_rcOriginBK.bottom * dbZoomScale;
-
-        m_rcBK.offsetTo(0, 0);
-        ViewGroup.LayoutParams params = getLayoutParams();
-        params.width = (int) m_rcBK.width();
-        params.height = (int) m_rcBK.height();
-        setLayoutParams(params);
-
-        this.invalidate();
-
-        //  放大后偏移位置
-        //m_rcBK.offsetTo((this.getWidth() - m_rcBK.width()) / 2, (getHeight() - m_rcBK.height()) / 2);
-
-    }
-
-    /**
-     * 上层画布同步偏移底层画笔
-     */
-    public void SyncOffset(float x, float y) {
-        m_rcBK.offset(x, y);
-
-
-        if (m_rcBK.width() < this.getWidth()) {
-            m_rcBK.offsetTo((this.getWidth() - m_rcBK.width()) / 2, m_rcBK.top);
-        } else if (m_rcBK.left > 0) {
-            m_rcBK.offsetTo(0, m_rcBK.top);
-        } else if (m_rcBK.right < this.getWidth()) {
-            m_rcBK.offset(this.getWidth() - m_rcBK.right, 0);
-        }
-
-        if (m_rcBK.height() < this.getHeight()) {
-            m_rcBK.offsetTo(m_rcBK.left, (this.getHeight() - m_rcBK.height()) / 2);
-        } else if (m_rcBK.top > 0) {
-            m_rcBK.offsetTo(m_rcBK.left, 0);
-        } else if (m_rcBK.bottom < this.getHeight()) {
-            m_rcBK.offset(0, this.getHeight() - m_rcBK.bottom);
-        }
-
-        // mfZoomCheckPoint = currentZoomCheckPoint;
-        this.invalidate();
-
-    }
-
     /**
      * 是那种类型
      *
@@ -1538,19 +1323,6 @@ public class PaintPad extends View {
      */
     public void setmToolsEraserWidth(int mToolsEraserWidth) {
         this.mToolsEraserWidth = mToolsEraserWidth;
-    }
-
-
-    public interface PaintPadMoveInterface {
-        void onTouchMove(float dx, float dy);
-    }
-
-    public void setPaintPadMoveInterface(PaintPadMoveInterface paintPadMoveInterface) {
-        this.mPaintPadMoveInterface = paintPadMoveInterface;
-    }
-
-    public void setWhiteBoardbackgroundIndex(int whiteBoardbackgroundIndex) {
-        this.colorIndex = whiteBoardbackgroundIndex;
     }
 
     public void cleanActions() {
